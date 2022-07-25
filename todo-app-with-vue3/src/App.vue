@@ -6,13 +6,24 @@
       <input v-model="newTodo" type="text" placeholder="Info your todo" /><br />
       <button>Add new todo</button>
     </form>
+    <button @click="toggleAll()">Mark all as done</button>
     <h2>List of Todos</h2>
     <div class="row" v-for="(todo, index) in todos" :key="todo">
-      <p class="list-items" :class="{done: todo.done}">
+      <p class="list-items" :class="{ done: todo.done }">
         {{ todo.content }}
       </p>
-      <i :title="todo.done === false ? 'Mark as done' : 'Unmark as done'" class="bi bi-check" id="btn-done" @click="toggleDone(todo)"></i>
-      <i title="Discard Item" class="bi bi-trash" id="btn-trash" @click="discardItem(index)"></i>
+      <i
+        :title="todo.done === false ? 'Mark as done' : 'Unmark as done'"
+        class="bi bi-check"
+        id="btn-done"
+        @click="toggleDone(todo)"
+      ></i>
+      <i
+        title="Discard Item"
+        class="bi bi-trash"
+        id="btn-trash"
+        @click="discardItem(index)"
+      ></i>
     </div>
     <div v-if="todos.length === 0" class="empty-list">
       <p>Nothing to show here.</p>
@@ -44,7 +55,11 @@ export default {
     }
 
     function discardItem(index) {
-      todos.value.splice(index, 1);
+      todos.value.splice(index, 1)
+    }
+
+    function toggleAll() {
+      todos.value.forEach(item => (item.done = true))
     }
 
     return {
@@ -52,6 +67,7 @@ export default {
       toggleDone,
       discardItem,
       addNewTodo,
+      toggleAll,
 
       //variables
       todos,
