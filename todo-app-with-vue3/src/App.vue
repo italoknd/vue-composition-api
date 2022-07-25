@@ -3,19 +3,30 @@
     <h1>Vue 3 Todo App</h1>
     <form @submit.prevent="addNewTodo">
       <label>Add a new todo:</label><br />
-      <input v-model="newTodo" type="text" placeholder="Info your todo" /><br />
-      <button>Add new todo</button>
+      <input v-model="newTodo" type="text" placeholder="Info your todo" />
+      <button title="Add todo" class="bi bi-plus-circle add-todo"></button>
     </form>
-    <button @click="toggleAll()">Mark all as done</button>
-    <h2>List of Todos</h2>
+    <div class="inline">
+      <h2>List of Todos</h2>
+      <button
+        :title="
+          !hasItem
+            ? 'Mark all as done (action deactivated: no items to mark as done)'
+            : 'Mark all as done.'
+        "
+        @click="toggleAll()"
+        class="bi bi-check2-all btn-all-done"
+        :disabled="!hasItem"
+        :class="!hasItem ? 'disabled-btn' : ''"
+      ></button>
+    </div>
     <div class="row" v-for="(todo, index) in todos" :key="todo">
       <p class="list-items" :class="{ done: todo.done }">
         {{ todo.content }}
       </p>
       <i
         :title="todo.done === false ? 'Mark as done' : 'Unmark as done'"
-        class="bi bi-check"
-        id="btn-done"
+        class="bi bi-check btn-done"
         @click="toggleDone(todo)"
       ></i>
       <i
@@ -40,14 +51,21 @@ export default {
   setup() {
     const newTodo = ref('')
     const todos = ref([])
+    const hasItem = ref(false)
 
     function addNewTodo() {
+      if (newTodo.value === '') {
+        alert('Info your todo before adding one!')
+        return
+      }
+
       todos.value.push({
         done: false,
         content: newTodo.value
       })
 
       newTodo.value = ''
+      hasItem.value = true
     }
 
     function toggleDone(todo) {
@@ -56,9 +74,17 @@ export default {
 
     function discardItem(index) {
       todos.value.splice(index, 1)
+
+      if (todos.value.length === 0) {
+        hasItem.value = false
+      }
     }
 
     function toggleAll() {
+      if (hasItem.value === false) {
+        alert('canoot ')
+        return
+      }
       todos.value.forEach(item => (item.done = true))
     }
 
@@ -71,7 +97,8 @@ export default {
 
       //variables
       todos,
-      newTodo
+      newTodo,
+      hasItem
     }
   }
 }
@@ -97,6 +124,10 @@ input {
   margin: 10px 0;
 }
 
+.add-todo {
+  margin-left: 10px;
+}
+
 .row {
   display: flex;
   justify-content: center;
@@ -104,17 +135,17 @@ input {
   margin: auto;
 }
 
-#btn-done {
+.btn-done {
   background: #22ee44;
   transition: 0.5s;
   margin: 0px 10px;
-  padding: 8px;
+  padding: 4px 10px;
   border-radius: 4px;
   color: white;
   cursor: pointer;
 }
 
-#btn-done:hover {
+.btn-done:hover {
   background: #22bb44;
 }
 
@@ -124,7 +155,7 @@ input {
   border-radius: 4px;
   color: white;
   cursor: pointer;
-  padding: 8px;
+  padding: 4px 10px;
 }
 
 #btn-trash:hover {
@@ -132,10 +163,10 @@ input {
 }
 
 button {
-  font-size: large;
+  font-size: larger;
   background: rgb(33, 125, 231);
   color: white;
-  padding: 5px 10px;
+  padding: 4px 10px;
   border: none;
   border-radius: 4px;
   transition: 0.5s;
@@ -163,7 +194,7 @@ button:hover {
     opacity: 0;
   }
   75% {
-    opacity: 1;
+    opacity: 0.8;
   }
   100% {
     opacity: 1;
@@ -172,5 +203,32 @@ button:hover {
 
 .done {
   text-decoration: line-through;
+}
+
+.btn-all-done {
+  padding: 4px 10px;
+  background: #22ee44;
+  transition: 0.5s;
+  margin-left: 10px;
+}
+
+.btn-all-done:hover {
+  background: #22bb44;
+}
+
+.disabled-btn {
+  background: grey;
+  cursor: auto;
+  transition: 0.5s;
+}
+
+.disabled-btn:hover {
+  background: rgb(73, 73, 73);
+}
+
+.inline {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
