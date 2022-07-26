@@ -15,7 +15,7 @@
             ? 'Mark all as done (action deactivated: no items to mark as done)'
             : 'Mark all as done.'
         "
-        @click="toggleAll()"
+        @click.prevent="toggleAll()"
         class="bi bi-check2-all btn-all-done"
         :disabled="!hasItem"
         :class="!hasItem ? 'disabled-btn' : ''"
