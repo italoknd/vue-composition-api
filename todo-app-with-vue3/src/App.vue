@@ -1,13 +1,14 @@
 <template id="app">
   <div class="form">
     <h1>Vue 3 Todo App</h1>
-    <form @submit.prevent="addNewTodo">
+    <form>
       <label>Add a new todo:</label><br />
       <input v-model="newTodo" type="text" placeholder="Info your todo" />
-      <button title="Add todo" class="bi bi-plus-circle add-todo"></button>
-    </form>
-    <div class="inline">
-      <h2>List of Todos</h2>
+      <button
+        title="Add todo"
+        class="bi bi-plus-circle add-todo"
+        @click.prevent="addNewTodo"
+      ></button>
       <button
         :title="
           !hasItem
@@ -19,6 +20,9 @@
         :disabled="!hasItem"
         :class="!hasItem ? 'disabled-btn' : ''"
       ></button>
+    </form>
+    <div class="inline">
+      <h2>List of Todos</h2>
     </div>
     <div class="row" v-for="(todo, index) in todos" :key="todo">
       <p class="list-items" :class="{ done: todo.done }">
