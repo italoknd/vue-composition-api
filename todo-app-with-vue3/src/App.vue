@@ -1,47 +1,65 @@
 <template id="app">
-  <div class="form">
+  <div>
     <h1>Vue 3 Todo App</h1>
-    <form>
-      <label>Add a new todo:</label><br />
-      <input v-model="newTodo" type="text" placeholder="Info your todo" />
-      <button
-        title="Add todo"
-        class="bi bi-plus-circle add-todo"
-        @click.prevent="addNewTodo"
-      ></button>
-      <button
-        :title="
-          !hasItem
-            ? 'Mark all as done (action deactivated: no items to mark as done)'
-            : 'Mark all as done.'
-        "
-        @click.prevent="toggleAll()"
-        class="bi bi-check2-all btn-all-done"
-        :disabled="!hasItem"
-        :class="!hasItem ? 'disabled-btn' : ''"
-      ></button>
-    </form>
-    <div class="inline">
-      <h2>List of Todos</h2>
-    </div>
-    <div class="row" v-for="(todo, index) in todos" :key="todo">
-      <p class="list-items" :class="{ done: todo.done }">
-        {{ todo.content }}
-      </p>
-      <i
-        :title="todo.done === false ? 'Mark as done' : 'Unmark as done'"
-        class="bi bi-check btn-done"
-        @click="toggleDone(todo)"
-      ></i>
-      <i
-        title="Discard Item"
-        class="bi bi-trash"
-        id="btn-trash"
-        @click="discardItem(index)"
-      ></i>
-    </div>
-    <div v-if="todos.length === 0" class="empty-list">
-      <p>Nothing to show here.</p>
+    <div class="grid-container">
+      <div class="grid-item">
+        <form>
+          <label>Add a new todo:</label><br />
+          <input v-model="newTodo" type="text" placeholder="Info your todo" />
+          <button
+            title="Add todo"
+            class="bi bi-plus-circle add-todo"
+            @click.prevent="addNewTodo"
+          ></button>
+          <button
+            :title="
+              allDone
+                ? 'Mark all as done (action deactivated: no items to mark as done)'
+                : 'Mark all as done.'
+            "
+            @click.prevent="toggleAll()"
+            class="bi bi-check2-all btn-all-done"
+            :disabled="!hasItem"
+            :class="!hasItem ? 'disabled-btn' : ''"
+          ></button>
+        </form>
+      </div>
+      <div class="grid-item">
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="todo">Todo</th>
+              <th class="actions">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(todo, index) in todos" :key="todo" class="row">
+              <td class="todo content" :class="{ done: todo.done }">
+                {{ todo.content }}
+              </td>
+
+              <td class="actions">
+                <i
+                  :title="
+                    todo.done === false ? 'Mark as done' : 'Unmark as done'
+                  "
+                  class="bi bi-check btn-done"
+                  @click="toggleDone(todo)"
+                ></i>
+                <i
+                  title="Discard Item"
+                  class="bi bi-trash"
+                  id="btn-trash"
+                  @click="discardItem(index)"
+                ></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div v-if="todos.length === 0" class="empty-list">
+          <p>Nothing to show here.</p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -115,17 +133,65 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: white;
   margin-top: 60px;
 }
 
+:root {
+  background: rgba(25, 83, 241, 0.925);
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 10px;
+}
+
+form{
+  width: 80%;
+}
+
 label {
-  font-size: large;
+  text-align: left;
+  margin-right: 16.5em;
+  font-size: 1.4625em;
 }
 
 input {
   font-size: large;
   margin: 10px 0;
+  padding: .4em 12em .4em .4em;
+}
+
+input:focus {
+  outline: none;
+  border: 2px solid rgb(0, 60, 255);
+  border-radius: 2px;
+}
+
+table {
+  width: 90%;
+  border-collapse: collapse;
+  margin-top: 2.3em;
+}
+
+thead {
+  font-size: 1.1625em;
+  background: rgb(73, 73, 73);
+}
+
+.actions {
+  text-align: right;
+  padding: 0.5em;
+}
+
+.todo {
+  text-align: left;
+  padding: 0.5em;
+}
+
+.content {
+  font-size: 1.1625em;
 }
 
 .add-todo {
@@ -133,17 +199,16 @@ input {
 }
 
 .row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto;
+  background: white;
+  color: rgb(73, 73, 73);
+  border-bottom: 1px solid rgb(73, 73, 73);
 }
 
 .btn-done {
   background: #22ee44;
   transition: 0.5s;
   margin: 0px 10px;
-  padding: 4px 10px;
+  padding: 6px 10px;
   border-radius: 4px;
   color: white;
   cursor: pointer;
@@ -159,7 +224,7 @@ input {
   border-radius: 4px;
   color: white;
   cursor: pointer;
-  padding: 4px 10px;
+  padding: 6px 10px;
 }
 
 #btn-trash:hover {
@@ -170,7 +235,7 @@ button {
   font-size: larger;
   background: rgb(33, 125, 231);
   color: white;
-  padding: 4px 10px;
+  padding: 6px 10px;
   border: none;
   border-radius: 4px;
   transition: 0.5s;
@@ -179,10 +244,6 @@ button {
 
 button:hover {
   background: rgb(17, 91, 175);
-}
-
-.list-items {
-  font-size: 25px;
 }
 
 .empty-list {
@@ -210,7 +271,7 @@ button:hover {
 }
 
 .btn-all-done {
-  padding: 4px 10px;
+  padding: 6px 10px;
   background: #22ee44;
   transition: 0.5s;
   margin-left: 10px;
@@ -228,11 +289,5 @@ button:hover {
 
 .disabled-btn:hover {
   background: rgb(73, 73, 73);
-}
-
-.inline {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 </style>
