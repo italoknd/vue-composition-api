@@ -1,8 +1,24 @@
 <script>
+import { useStore } from 'vuex'
+import { ref } from 'vue'
+
 import BaseButton from './BaseButton.vue'
 
 export default {
-  setup() {},
+  setup() {
+    const store = useStore()
+    let newTodo = ref('')
+
+    function addNewTodo() {
+      console.log(store)
+      store.commit('addNewTodo', newTodo.value)
+    }
+
+    return {
+      newTodo,
+      addNewTodo
+    }
+  },
   component: {
     BaseButton
   }
@@ -11,11 +27,11 @@ export default {
 
 <template>
   <div class="grid-item">
-    <form>
+    <form v-on:submit.prevent="addNewTodo">
       <label>Add a new todo:</label><br />
       <input v-model="newTodo" type="text" placeholder="Info your todo" />
       <BaseButton
-        @click.prevent="addNewTodo"
+        type="submit"
         :addTodo="true"
         class="bi bi-plus-circle add-todo"
         title="Add todo"

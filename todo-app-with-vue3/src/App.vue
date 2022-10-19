@@ -2,15 +2,8 @@
   <div>
     <h1>Vue 3 Todo App</h1>
     <div class="grid-container">
-      <!-- <div class="grid-item">
-        <form>
-          <label>Add a new todo:</label><br />
-          <input v-model="newTodo" type="text" placeholder="Info your todo" />
-
-        </form>
-      </div> -->
       <FormTodo />
-      <div class="grid-item">
+      <div cylass="grid-item">
         <table class="table">
           <thead>
             <tr>
