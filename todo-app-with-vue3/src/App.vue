@@ -18,9 +18,14 @@
                 : 'Mark all as done.'
             "
             @click.prevent="toggleAll()"
-            class="bi bi-check2-all btn-all-done"
             :disabled="!hasItem"
-            :class="!hasItem ? 'disabled-btn' : ''"
+            :class="
+              !hasItem
+                ? 'disabled-btn bi bi-check2-all btn-all-done'
+                : allDone
+                ? 'bi bi-arrow-counterclockwise btn-info'
+                : 'bi bi-check2-all btn-all-done'
+            "
           ></button>
         </form>
       </div>
@@ -40,10 +45,15 @@
 
               <td class="actions">
                 <i
-                  :title="
-                    todo.done === false ? 'Mark as done' : 'Unmark as done'
-                  "
+                  v-if="!todo.done"
+                  :title="todo.done === false ? 'Mark as done' : ''"
                   class="bi bi-check btn-done"
+                  @click="toggleDone(todo)"
+                ></i>
+                <i
+                  v-else
+                  :title="todo.done === true ? 'Unmark as done' : ''"
+                  class="bi bi-arrow-counterclockwise btn-info"
                   @click="toggleDone(todo)"
                 ></i>
                 <i
@@ -74,6 +84,7 @@ export default {
     const newTodo = ref('')
     const todos = ref([])
     const hasItem = ref(false)
+    const allDone = ref(false)
 
     function addNewTodo() {
       if (newTodo.value === '') {
@@ -103,11 +114,13 @@ export default {
     }
 
     function toggleAll() {
-      if (hasItem.value === false) {
-        alert('canoot ')
-        return
+      allDone.value = !allDone.value
+
+      if (allDone.value) {
+        todos.value.forEach(item => (item.done = true))
+      } else {
+        todos.value.forEach(item => (item.done = false))
       }
-      todos.value.forEach(item => (item.done = true))
     }
 
     return {
@@ -120,7 +133,8 @@ export default {
       //variables
       todos,
       newTodo,
-      hasItem
+      hasItem,
+      allDone
     }
   }
 }
@@ -138,7 +152,7 @@ export default {
 }
 
 :root {
-  background: rgba(25, 83, 241, 0.925);
+  background: #2f2f2f;
 }
 
 .grid-container {
@@ -147,7 +161,7 @@ export default {
   gap: 10px;
 }
 
-form{
+form {
   width: 80%;
 }
 
@@ -160,7 +174,7 @@ label {
 input {
   font-size: large;
   margin: 10px 0;
-  padding: .4em 12em .4em .4em;
+  padding: 0.4em 12em 0.4em 0.4em;
 }
 
 input:focus {
@@ -289,5 +303,20 @@ button:hover {
 
 .disabled-btn:hover {
   background: rgb(73, 73, 73);
+}
+
+.btn-info {
+  background: rgb(33, 125, 231);
+  padding: 6px 10px;
+  transition: 0.5s;
+  margin-left: 10px;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 0px 10px;
+}
+
+.btn-info:hover {
+  background: rgb(17, 91, 175);
 }
 </style>
