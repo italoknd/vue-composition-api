@@ -11,22 +11,11 @@
             class="bi bi-plus-circle add-todo"
             @click.prevent="addNewTodo"
           ></button>
-          <button
-            :title="
-              allDone
-                ? 'Mark all as done (action deactivated: no items to mark as done)'
-                : 'Mark all as done.'
-            "
+          <BaseButton
+            :allDone="allDone"
+            :hasItem="hasItem"
             @click.prevent="toggleAll()"
-            :disabled="!hasItem"
-            :class="
-              !hasItem
-                ? 'disabled-btn bi bi-check2-all btn-all-done'
-                : allDone
-                ? 'bi bi-arrow-counterclockwise btn-info'
-                : 'bi bi-check2-all btn-all-done'
-            "
-          ></button>
+          />
         </form>
       </div>
       <div class="grid-item">
@@ -76,67 +65,58 @@
 
 <script>
 import { ref } from 'vue'
+import BaseButton from './components/BaseButton.vue'
 
 export default {
   name: 'App',
-
   setup() {
     const newTodo = ref('')
     const todos = ref([])
     const hasItem = ref(false)
     const allDone = ref(false)
-
     function addNewTodo() {
       if (newTodo.value === '') {
         alert('Info your todo before adding one!')
         return
       }
-
       todos.value.push({
         done: false,
         content: newTodo.value
       })
-
       newTodo.value = ''
       hasItem.value = true
     }
-
     function toggleDone(todo) {
       todo.done = !todo.done
     }
-
     function discardItem(index) {
       todos.value.splice(index, 1)
-
       if (todos.value.length === 0) {
         hasItem.value = false
       }
     }
-
     function toggleAll() {
       allDone.value = !allDone.value
-
       if (allDone.value) {
         todos.value.forEach(item => (item.done = true))
       } else {
         todos.value.forEach(item => (item.done = false))
       }
     }
-
     return {
       //functions
       toggleDone,
       discardItem,
       addNewTodo,
       toggleAll,
-
       //variables
       todos,
       newTodo,
       hasItem,
       allDone
     }
-  }
+  },
+  components: { BaseButton }
 }
 </script>
 
