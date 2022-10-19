@@ -9,7 +9,7 @@ export default {
     hasItem: {
       type: Boolean,
       default: true
-    }
+    },
   }
 }
 </script>

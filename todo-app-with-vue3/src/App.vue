@@ -2,22 +2,14 @@
   <div>
     <h1>Vue 3 Todo App</h1>
     <div class="grid-container">
-      <div class="grid-item">
+      <!-- <div class="grid-item">
         <form>
           <label>Add a new todo:</label><br />
           <input v-model="newTodo" type="text" placeholder="Info your todo" />
-          <button
-            title="Add todo"
-            class="bi bi-plus-circle add-todo"
-            @click.prevent="addNewTodo"
-          ></button>
-          <BaseButton
-            :allDone="allDone"
-            :hasItem="hasItem"
-            @click.prevent="toggleAll()"
-          />
+
         </form>
-      </div>
+      </div> -->
+      <FormTodo />
       <div class="grid-item">
         <table class="table">
           <thead>
@@ -65,7 +57,7 @@
 
 <script>
 import { ref } from 'vue'
-import BaseButton from './components/BaseButton.vue'
+import FormTodo from './components/FormTodo.vue'
 
 export default {
   name: 'App',
@@ -116,7 +108,7 @@ export default {
       allDone
     }
   },
-  components: { BaseButton }
+  components: { FormTodo }
 }
 </script>
 
