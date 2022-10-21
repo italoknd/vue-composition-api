@@ -3,7 +3,8 @@
     <h1>Vue 3 Todo App</h1>
     <div class="grid-container">
       <FormTodo />
-      <div cylass="grid-item">
+      <DisplayTodos />
+      <!-- <div cylass="grid-item">
         <table class="table">
           <thead>
             <tr>
@@ -43,7 +44,7 @@
         <div v-if="todos.length === 0" class="empty-list">
           <p>Nothing to show here.</p>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -55,22 +56,23 @@ import FormTodo from './components/FormTodo.vue'
 export default {
   name: 'App',
   setup() {
-    const newTodo = ref('')
+    // const newTodo = ref('')
     const todos = ref([])
     const hasItem = ref(false)
     const allDone = ref(false)
-    function addNewTodo() {
-      if (newTodo.value === '') {
-        alert('Info your todo before adding one!')
-        return
-      }
-      todos.value.push({
-        done: false,
-        content: newTodo.value
-      })
-      newTodo.value = ''
-      hasItem.value = true
-    }
+
+    // function addNewTodo() {
+    //   if (newTodo.value === '') {
+    //     alert('Info your todo before adding one!')
+    //     return
+    //   }
+    //   todos.value.push({
+    //     done: false,
+    //     content: newTodo.value
+    //   })
+    //   newTodo.value = ''
+    //   hasItem.value = true
+    // }
     function toggleDone(todo) {
       todo.done = !todo.done
     }
@@ -92,11 +94,11 @@ export default {
       //functions
       toggleDone,
       discardItem,
-      addNewTodo,
+      // addNewTodo,
       toggleAll,
       //variables
       todos,
-      newTodo,
+      // newTodo,
       hasItem,
       allDone
     }
@@ -171,10 +173,6 @@ thead {
 
 .content {
   font-size: 1.1625em;
-}
-
-.add-todo {
-  margin-left: 10px;
 }
 
 .row {

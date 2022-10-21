@@ -10,16 +10,15 @@ export default createStore({
   getters: {},
   mutations: {
     addNewTodo(state, data) {
-      // if (state.newTodo === '') {
-      //   alert('Info your todo before adding one!')
-      //   return
-      // }
-      console.log(data);
+      if (data === '') {
+        alert('Info your todo before adding one!')
+        return
+      }
+      
       state.todos.push({
         done: false,
         content: data
       })
-      state.newTodo = ''
       state.hasItem = true
     }
   },
